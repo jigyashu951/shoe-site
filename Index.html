@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#030305">
+    <title>NEON | Footwear</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.150.1/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="preloader" id="preloader">
+        <div class="loader-content">
+            <div class="loader-text" id="loader-text">INITIALIZING VOID...</div>
+            <div class="loader-bar-container">
+                <div class="loader-bar" id="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="grain"></div>
+
+    <canvas id="webgl-canvas"></canvas>
+
+    <header>
+        <div class="logo hover-target">NEON KICKS</div>
+        <div class="cart-btn hover-target" id="cart-toggle">Cart (<span id="cart-count">0</span>)</div>
+    </header>
+
+    <main class="landing">
+        <div class="marquee-container">
+            <div class="marquee-content" id="marquee">
+                NEON KICKS // UNLIMITED AURA // STEP INTO THE VOID // NEXT-GEN FOOTWEAR // 
+                NEON KICKS // UNLIMITED AURA // STEP INTO THE VOID // NEXT-GEN FOOTWEAR //
+            </div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-text">
+                <span class="word hover-target glitch" data-text="STEP.">STEP.</span>
+                <span class="word hover-target glitch" data-text="INTO.">INTO.</span>
+                <span class="word hover-target glitch" data-text="NEON.">NEON.</span>
+            </h1>
+            <p class="hero-sub hover-target">Scroll to discover the collection</p>
+        </div>
+    </main>
+
+    <section class="shop-container" id="shop">
+        <div class="controls">
+            <div class="filter">
+                <select id="filter-category" class="hover-target">
+                    <option value="all">All Styles</option>
+                    <option value="jordan">Jordans</option>
+                    <option value="dunk">Dunks</option>
+                    <option value="yeezy">Yeezys</option>
+                </select>
+            </div>
+            <div class="sort">
+                <select id="sort-price" class="hover-target">
+                    <option value="default">Sort by</option>
+                    <option value="low">Price: Low to High</option>
+                    <option value="high">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid" id="product-grid"></div>
+    </section>
+
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2 class="logo hover-target">NEON KICKS</h2>
+                <p>Step into the void. The future of limited edition, next-gen footwear is right here.</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-column">
+                    <h3>Shop</h3>
+                    <a href="#" class="hover-target">Jordans</a>
+                    <a href="#" class="hover-target">Dunks</a>
+                    <a href="#" class="hover-target">Yeezys</a>
+                </div>
+                <div class="link-column">
+                    <h3>Support</h3>
+                    <a href="#" class="hover-target">FAQ</a>
+                    <a href="#" class="hover-target">Shipping Info</a>
+                    <a href="#" class="hover-target">Returns & Exchanges</a>
+                </div>
+                <div class="link-column">
+                    <h3>Legal</h3>
+                    <a href="#" class="hover-target">Privacy Policy</a>
+                    <a href="#" class="hover-target">Terms of Service</a>
+                    <a href="#" class="hover-target">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2026 Neon Kicks. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="hover-target">Instagram</a>
+                <a href="#" class="hover-target">X (Twitter)</a>
+                <a href="#" class="hover-target">TikTok</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <aside class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <span>Your Cart</span>
+            <span class="close-cart hover-target" id="close-cart">✕</span>
+        </div>
+        
+        <div id="cart-step-1" class="checkout-steps step-active">
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-footer">
+                <div class="receipt">
+                    <div class="receipt-row"><span>Subtotal</span> <span>₹<span id="cart-subtotal">0</span></span></div>
+                    <div class="receipt-row"><span>Shipping</span> <span>₹<span id="cart-shipping">0</span></span></div>
+                    <div class="receipt-row"><span>GST (18%)</span> <span>₹<span id="cart-gst">0</span></span></div>
+                    <div class="receipt-row total"><span>Total</span> <span style="color: var(--neon-accent);">₹<span id="cart-total">0</span></span></div>
+                </div>
+                <button class="checkout-btn hover-target" id="btn-review">Review Order</button>
+            </div>
+        </div>
+
+        <div id="cart-step-2" class="checkout-steps">
+            <h3>Review Information</h3>
+            <p style="margin: 1rem 0; opacity: 0.7;">Shipping to: Cyber City, Sector 9</p>
+            <div class="receipt" style="margin-top: 1rem;">
+                <div class="receipt-row total"><span>Amount to Pay</span> <span style="color: var(--neon-accent);">₹<span id="review-total">0</span></span></div>
+            </div>
+            <button class="checkout-btn hover-target" id="btn-confirm" style="margin-top: 1.5rem;">Confirm Purchase</button>
+            <button class="checkout-btn outline hover-target" id="btn-back" style="margin-top: 0.5rem;">Back</button>
+        </div>
+
+        <div id="cart-step-3" class="checkout-steps">
+            <h2 style="margin-bottom: 1rem; color: var(--neon-accent);">Payment Verified!</h2>
+            <p>Your neon kicks are being minted. Tracking details sent via encrypted signal.</p>
+            <button class="checkout-btn hover-target" id="btn-return" style="margin-top: 2rem;">Return to Shop</button>
+        </div>
+    </aside>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
